@@ -5,16 +5,21 @@ VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaspberryApp", "RaspberryApp\RaspberryApp.csproj", "{39135C8E-A842-46E6-847F-BFC098CDAECE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{BE142317-E7C3-4A38-BEAD-70E702356B77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|ARM = Release|ARM
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{39135C8E-A842-46E6-847F-BFC098CDAECE}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{39135C8E-A842-46E6-847F-BFC098CDAECE}.Debug|ARM.ActiveCfg = Debug|ARM
 		{39135C8E-A842-46E6-847F-BFC098CDAECE}.Debug|ARM.Build.0 = Debug|ARM
 		{39135C8E-A842-46E6-847F-BFC098CDAECE}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -24,6 +29,7 @@ Global
 		{39135C8E-A842-46E6-847F-BFC098CDAECE}.Debug|x86.ActiveCfg = Debug|x86
 		{39135C8E-A842-46E6-847F-BFC098CDAECE}.Debug|x86.Build.0 = Debug|x86
 		{39135C8E-A842-46E6-847F-BFC098CDAECE}.Debug|x86.Deploy.0 = Debug|x86
+		{39135C8E-A842-46E6-847F-BFC098CDAECE}.Release|Any CPU.ActiveCfg = Release|x86
 		{39135C8E-A842-46E6-847F-BFC098CDAECE}.Release|ARM.ActiveCfg = Release|ARM
 		{39135C8E-A842-46E6-847F-BFC098CDAECE}.Release|ARM.Build.0 = Release|ARM
 		{39135C8E-A842-46E6-847F-BFC098CDAECE}.Release|ARM.Deploy.0 = Release|ARM
@@ -33,6 +39,22 @@ Global
 		{39135C8E-A842-46E6-847F-BFC098CDAECE}.Release|x86.ActiveCfg = Release|x86
 		{39135C8E-A842-46E6-847F-BFC098CDAECE}.Release|x86.Build.0 = Release|x86
 		{39135C8E-A842-46E6-847F-BFC098CDAECE}.Release|x86.Deploy.0 = Release|x86
+		{BE142317-E7C3-4A38-BEAD-70E702356B77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE142317-E7C3-4A38-BEAD-70E702356B77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE142317-E7C3-4A38-BEAD-70E702356B77}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{BE142317-E7C3-4A38-BEAD-70E702356B77}.Debug|ARM.Build.0 = Debug|Any CPU
+		{BE142317-E7C3-4A38-BEAD-70E702356B77}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BE142317-E7C3-4A38-BEAD-70E702356B77}.Debug|x64.Build.0 = Debug|Any CPU
+		{BE142317-E7C3-4A38-BEAD-70E702356B77}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BE142317-E7C3-4A38-BEAD-70E702356B77}.Debug|x86.Build.0 = Debug|Any CPU
+		{BE142317-E7C3-4A38-BEAD-70E702356B77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE142317-E7C3-4A38-BEAD-70E702356B77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE142317-E7C3-4A38-BEAD-70E702356B77}.Release|ARM.ActiveCfg = Release|Any CPU
+		{BE142317-E7C3-4A38-BEAD-70E702356B77}.Release|ARM.Build.0 = Release|Any CPU
+		{BE142317-E7C3-4A38-BEAD-70E702356B77}.Release|x64.ActiveCfg = Release|Any CPU
+		{BE142317-E7C3-4A38-BEAD-70E702356B77}.Release|x64.Build.0 = Release|Any CPU
+		{BE142317-E7C3-4A38-BEAD-70E702356B77}.Release|x86.ActiveCfg = Release|Any CPU
+		{BE142317-E7C3-4A38-BEAD-70E702356B77}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
