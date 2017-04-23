@@ -25,7 +25,7 @@ namespace WebApplication1.Controllers
 
             
                 var receiver = eventHubClient.GetDefaultConsumerGroup().
-                CreateReceiver(d2cPartitions[0], DateTime.Now.AddDays(-1));
+                CreateReceiver(d2cPartitions[0], DateTime.Now.AddHours(-5));
                 var dataTask = ReceiveMessagesFromDeviceAsync(receiver);
                 data = dataTask;
             
