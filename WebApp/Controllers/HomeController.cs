@@ -53,7 +53,7 @@ namespace WebApplication1.Controllers
 
                     if (eventData == null) break;
 
-                    string singleEventData = Encoding.UTF8.GetString(eventData.GetBytes());
+                    string singleEventData = $"{eventData.EnqueuedTimeUtc} {Encoding.UTF8.GetString(eventData.GetBytes())}";
                     data.Add(singleEventData);
                 }
                 catch(Exception)
