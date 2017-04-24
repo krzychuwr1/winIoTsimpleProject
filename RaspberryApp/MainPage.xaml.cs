@@ -19,6 +19,7 @@ using Windows.ApplicationModel;
 using System.Diagnostics;
 using Windows.Storage;
 using Windows.UI.Core;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -31,7 +32,13 @@ namespace RaspberryApp
     {
         private SpeechRecognizer recognizer;
 
+        private DeviceClient deviceClient;
+
         private const string SRGS_FILE = "Grammar\\grammar.xml";
+
+        string iotHubUri = ""; // value from azure iot hub needed
+        string deviceId = ""; // value from azure iot hub needed
+        string deviceKey = ""; // value from azure iot hub needed
 
         public MainPage()
         {
@@ -41,6 +48,23 @@ namespace RaspberryApp
 
             initializeSpeechRecognizer();
 
+            initializeAzureClient();
+        }
+
+        private void initializeAzureClient()
+        {
+            if(string.IsNullOrEmpty(iotHubUri) || string.IsNullOrEmpty(deviceId) || string.IsNullOrEmpty(deviceKey))
+            {
+                Debug.WriteLine("Azure key needed");
+                return;
+            }
+            deviceClient =
+                DeviceClient.Create(
+                    iotHubUri,
+                    AuthenticationMethodFactory.
+                    CreateAuthenticationWithRegistrySymmetricKey(deviceId, deviceKey),
+                    TransportType.Amqp
+                    );
         }
 
         private async void initializeSpeechRecognizer()
@@ -89,6 +113,21 @@ namespace RaspberryApp
                 this.Message.Text = args.Result.Text;
             }
             );
+
+            await sendStringToAzure(args.Result.Text);
+        }
+
+        private async Task sendStringToAzure(string text)
+        {
+            if(deviceClient != null)
+            {
+                var message = new Message(Encoding.ASCII.GetBytes(text));
+                await deviceClient.SendEventAsync(message);
+            }
+            else
+            {
+                Debug.WriteLine("Azure DeviceClient has not been initialized");
+            }
         }
 
         private void RecognizerStateChanged(SpeechRecognizer sender, SpeechRecognizerStateChangedEventArgs args)
@@ -101,23 +140,6 @@ namespace RaspberryApp
             await recognizer.ContinuousRecognitionSession.StopAsync();
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            string iotHubUri = ""; // value from azure iot hub needed
-            string deviceId = ""; // value from azure iot hub needed
-            string deviceKey = ""; // value from azure iot hub needed
-
-            var deviceClient = 
-                DeviceClient.Create(
-                    iotHubUri,
-                    AuthenticationMethodFactory.
-                    CreateAuthenticationWithRegistrySymmetricKey(deviceId, deviceKey),
-                    TransportType.Amqp
-                    );
-
-            var str = Message.Text;
-            var message = new Message(Encoding.ASCII.GetBytes(str));
-            await deviceClient.SendEventAsync(message);
-        }   
+        private async void Button_Click(object sender, RoutedEventArgs e) => await sendStringToAzure(Message.Text);
     }
 }
