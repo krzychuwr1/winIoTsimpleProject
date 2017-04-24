@@ -21,13 +21,9 @@ namespace WebApplication1.Controllers
 
             var d2cPartitions = eventHubClient.GetRuntimeInformation().PartitionIds;
 
-            IEnumerable<string> data = new List<string>();
-
-            
-                var receiver = eventHubClient.GetDefaultConsumerGroup().
-                CreateReceiver(d2cPartitions[0], DateTime.Now.AddHours(-5));
-                var dataTask = ReceiveMessagesFromDeviceAsync(receiver);
-                data = dataTask;
+            var receiver = eventHubClient.GetDefaultConsumerGroup().
+            CreateReceiver(d2cPartitions[0], DateTime.Now.AddHours(-5));
+            var data =  ReceiveMessagesFromDeviceAsync(receiver);;
             
             return View(data);
         }
