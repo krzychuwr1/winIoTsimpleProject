@@ -130,7 +130,6 @@ namespace RaspberryApp
             }
             );
 
-            await sendStringToAzure(args.Result.Text);
 
             GpioPin pin;
 
@@ -151,6 +150,8 @@ namespace RaspberryApp
             }
 
             pin.Write(value);
+
+            await sendStringToAzure(args.Result.Text);
         }
 
         private async Task sendStringToAzure(string text)
