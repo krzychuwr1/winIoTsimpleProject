@@ -6,11 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpPost]
+        public ActionResult Chart(SingleLedModel model)
+        {
+            return View(model);
+        }
+
         public ActionResult Index()
         {
             string connectionString = ""; //insert connection string from azure iot hub here
@@ -24,13 +31,13 @@ namespace WebApplication1.Controllers
             var receiver = eventHubClient.GetDefaultConsumerGroup().
             CreateReceiver(d2cPartitions[0], DateTime.Now.AddHours(-5));
             var data =  ReceiveMessagesFromDeviceAsync(receiver);;
-            
+            receiver.Close();
             return View(data);
         }
 
-        IEnumerable<string> ReceiveMessagesFromDeviceAsync(EventHubReceiver receiver)
+        LedsModel ReceiveMessagesFromDeviceAsync(EventHubReceiver receiver)
         {
-            var data = new List<string>();
+            var newData = new LedsModel();
             while (true)
             {
                 try
@@ -39,15 +46,25 @@ namespace WebApplication1.Controllers
 
                     if (eventData == null) break;
 
-                    string singleEventData = $"{eventData.EnqueuedTimeUtc} {Encoding.UTF8.GetString(eventData.GetBytes())}";
-                    data.Add(singleEventData);
+                    var messageString = Encoding.UTF8.GetString(eventData.GetBytes());
+
+                    if (messageString.EndsWith("red led"))
+                    {
+                        newData.Red.Times.Add(eventData.EnqueuedTimeUtc);
+                        newData.Red.States.Add(messageString.StartsWith("turn on") ? 1 : 0);
+                    }
+                    else
+                    {
+                        newData.Green.Times.Add(eventData.EnqueuedTimeUtc);
+                        newData.Green.States.Add(messageString.StartsWith("turn on") ? 1 : 0);
+                    }
                 }
                 catch(Exception)
                 {
                 }
 
             }
-            return data;
+            return newData;
         }
     }
 }

@@ -1,8 +1,19 @@
-﻿@model IEnumerable<string>
+﻿@model WebApplication1.Models.LedsModel
 
 @{
-    foreach(var msg in Model)
+    <h1>Red led</h1>
+    foreach(var msg in Model.Red.Times.Zip(Model.Red.States, (times, states) => new { times, states }))
     {
-        <p>@msg</p>
+        <p>time: @msg.times state: @msg.states</p>
     }
+
+    @*<img src='@Url.Action("Chart", "Home", Model.Red)' alt="Chart" />*@
+
+    <h1>Green led</h1>
+    foreach (var msg in Model.Green.Times.Zip(Model.Green.States, (times, states) => new { times, states }))
+    {
+        <p>time: @msg.times state: @msg.states</p>
+    }
+
+    @*<img src='@Url.Action("Chart", "Home", Model.Green)' alt="Chart" />*@
 }

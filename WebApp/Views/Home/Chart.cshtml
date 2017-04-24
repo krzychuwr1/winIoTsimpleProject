@@ -1,0 +1,8 @@
+﻿@model WebApplication1.Models.SingleLedModel
+
+@{ 
+    var mychart = new Chart(width: 600, height: 400)
+        .AddSeries(chartType: "stepline", xValue: Model.Times, yValues: Model.States)
+        .Write();
+}
+
