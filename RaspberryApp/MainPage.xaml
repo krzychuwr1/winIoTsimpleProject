@@ -9,7 +9,8 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
-            <TextBox x:Name="Message" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Hello world"  Width="136" Height="73"/>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" FontSize="40" TextWrapping="Wrap" Text="Say something to turn on the led and send data to azure"  Width="550" Height="150"/>
+            <TextBlock x:Name="Message" TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Your command will be displayed here" FontSize="40" Width="550" Height="150"/>
             <Button HorizontalAlignment="Center" Click="Button_Click">Send this to azure</Button>
         </StackPanel>
     </Grid>
