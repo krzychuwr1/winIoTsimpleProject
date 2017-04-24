@@ -20,6 +20,7 @@ using System.Diagnostics;
 using Windows.Storage;
 using Windows.UI.Core;
 using System.Threading.Tasks;
+using Windows.Devices.Gpio;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -39,6 +40,11 @@ namespace RaspberryApp
         string iotHubUri = ""; // value from azure iot hub needed
         string deviceId = ""; // value from azure iot hub needed
         string deviceKey = ""; // value from azure iot hub needed
+        private GpioController gpio;
+        private GpioPin redPin;
+        private GpioPin greenPin;
+        private const int RED_LED_PIN = 23;
+        private const int GREEN_LED_PIN = 24;
 
         public MainPage()
         {
@@ -49,6 +55,22 @@ namespace RaspberryApp
             initializeSpeechRecognizer();
 
             initializeAzureClient();
+
+            initializeGPIO();
+        }
+
+        private void initializeGPIO()
+        {
+            gpio = GpioController.GetDefault();
+
+            redPin = gpio.OpenPin(RED_LED_PIN);
+            greenPin = gpio.OpenPin(GREEN_LED_PIN);
+
+            redPin.SetDriveMode(GpioPinDriveMode.Output);
+            greenPin.SetDriveMode(GpioPinDriveMode.Output);
+
+            redPin.Write(GpioPinValue.Low);
+            greenPin.Write(GpioPinValue.Low);
         }
 
         private void initializeAzureClient()
@@ -69,28 +91,22 @@ namespace RaspberryApp
 
         private async void initializeSpeechRecognizer()
         {
-            // Initialize recognizer
             recognizer = new SpeechRecognizer();
 
-            // Set event handlers
             recognizer.StateChanged += RecognizerStateChanged;
             recognizer.ContinuousRecognitionSession.ResultGenerated += RecognizerResultGenerated;
 
-            // Load Grammer file constraint
             string fileName = String.Format(SRGS_FILE);
             StorageFile grammarContentFile = await Package.Current.InstalledLocation.GetFileAsync(fileName);
 
             SpeechRecognitionGrammarFileConstraint grammarConstraint = new SpeechRecognitionGrammarFileConstraint(grammarContentFile);
 
-            // Add to grammer constraint
             recognizer.Constraints.Add(grammarConstraint);
 
-            // Compile grammer
             SpeechRecognitionCompilationResult compilationResult = await recognizer.CompileConstraintsAsync();
 
             Debug.WriteLine("Status: " + compilationResult.Status.ToString());
 
-            // If successful, display the recognition result.
             if (compilationResult.Status == SpeechRecognitionResultStatus.Success)
             {
                 Debug.WriteLine("Result: " + compilationResult.ToString());
@@ -115,11 +131,31 @@ namespace RaspberryApp
             );
 
             await sendStringToAzure(args.Result.Text);
+
+            GpioPin pin;
+
+            if (args.Result.Text.EndsWith("red led"))
+            {
+                pin = redPin;
+            }
+            else
+            {
+                pin = greenPin;
+            }
+
+            GpioPinValue value = GpioPinValue.Low;
+
+            if (args.Result.Text.StartsWith("turn on"))
+            {
+                value = GpioPinValue.High;
+            }
+
+            pin.Write(value);
         }
 
         private async Task sendStringToAzure(string text)
         {
-            if(deviceClient != null)
+            if (deviceClient != null)
             {
                 var message = new Message(Encoding.ASCII.GetBytes(text));
                 await deviceClient.SendEventAsync(message);
@@ -137,6 +173,7 @@ namespace RaspberryApp
 
         private async void MainPage_Unloaded(object sender, RoutedEventArgs e)
         {
+
             await recognizer.ContinuousRecognitionSession.StopAsync();
         }
 
