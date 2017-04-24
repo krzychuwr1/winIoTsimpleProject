@@ -79,12 +79,12 @@ namespace RaspberryApp
             }
         }
 
-        private void RecognizerResultGenerated(SpeechContinuousRecognitionSession session, SpeechContinuousRecognitionResultGeneratedEventArgs args)
+        private async void RecognizerResultGenerated(SpeechContinuousRecognitionSession session, SpeechContinuousRecognitionResultGeneratedEventArgs args)
         {
             // Output debug strings
             Debug.WriteLine(args.Result.Status);
             Debug.WriteLine(args.Result.Text);
-            Dispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
             {
                 this.Message.Text = args.Result.Text;
             }
